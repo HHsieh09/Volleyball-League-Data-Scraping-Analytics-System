@@ -1,0 +1,57 @@
+version: '3.3'
+services:
+
+  mysql:
+    image: mysql:8.0
+
+    container_name: mysql_container
+
+    # Setup mysql to use self-based hash password
+    command: mysqld --default-authentication-plugin=mysql_native_password
+
+    # Setup port mapping
+    ports:
+      - "3306:3306"
+    
+    # Setup environment variables
+    environment:
+      MYSQL_ROOT_PASSWORD: test
+      MYSQL_DATABASE: mydb
+      MYSQL_USER: user
+      MYSQL_PASSWORD: test
+
+    # Setup volume to prevent data loss
+    volumes:
+      - mysql:/var/lib/mysql
+
+    networks:
+      - dev
+
+  # Setup phpmyadmin
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:5.1.0
+
+    container_name: phpmyadmin_container
+
+    environment:
+      PMA_HOST: 172.18.0.2 # Use the actual IP from the previous command
+      MYSQL_ROOT_PASSWORD: test
+
+    #links:
+    #  - mysql:db
+
+    ports:
+      - 8000:80
+
+    depends_on:
+      - mysql
+
+    networks:
+      - dev
+
+networks:
+  dev:
+
+volumes:
+  mysql:
+    external: true
