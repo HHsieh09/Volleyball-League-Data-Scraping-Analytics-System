@@ -1,16 +1,16 @@
 import time
 import typing
 from loguru import logger
-from sqlalchemy import engine
+from sqlalchemy import engine, text
 from volleyballdata import clients
 
 def check_alive(connect: engine.base.Connection,):
-    connect.execute("Select 1 + 1")
+    connect.execute(text("Select 1 + 1"))
 
 """Automatically reconnect while the connection is malfunctioning"""
 def reconnect(connect_func: typing.Callable,) -> engine.base.Connection:
     try:
-        connect = connect_func
+        connect = connect_func()
     except Exception as e:
         logger.info(f"{connect_func.__name__} reconnect, error: {e}")
     return connect
@@ -46,3 +46,4 @@ class Router:
         a 'check alive' verification is performed to determine if the connection is still alive
         """
         return self.check_mysql_volleyballdata_conn_alive()
+    

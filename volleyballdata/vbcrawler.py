@@ -3,6 +3,7 @@ import sys
 
 import requests
 import pandas as pd
+from sqlalchemy import text
 from bs4 import BeautifulSoup
 from datetime import datetime, time
 from volleyballdata.router import Router
@@ -258,170 +259,140 @@ router = Router()
 """Insert match data into mysql"""
 def insert_match(match_df, cup):
     db_conn = router.mysql_volleyball_conn
-    cursor = db_conn.cursor()
 
-    query = """
-    INSERT INTO Matches (match_id, tournament_id, match_date, match_time, arena, duration)
-    VALUES (%s, %s, %s, %s, %s, %s)
-    """
+    query = text("""
+    INSERT IGNORE INTO Matches (match_cup_id, match_id, tournament_id, match_date, match_time, arena, duration)
+    VALUES (:match_cup_id, :match_id, :tournament_id, :match_date, :match_time, :arena, :duration)
+    """)
 
-    for _, row in match_df.to_dict(orient='records'):
-        match_id = row["index"]
-        tournament_id = cup
-        match_date = row["date"]
-        match_time = row["time"]
-        arena = row["arena"]
-        duration = row["duration"]
+    row = match_df.iloc[0]
 
-        cursor.execute(query, (match_id, tournament_id, match_date, match_time, arena, duration))
+    paras = {
+    "match_cup_id": f"{row['index']}_{cup}",
+    "match_id": row["index"],
+    "tournament_id": cup,
+    "match_date": row["date"],
+    "match_time": row["time"],
+    "arena": row["arena"],
+    "duration": row["duration"],
+    }
+
+    db_conn.execute(query, paras)
 
     db_conn.commit()
-    cursor.close()
+    db_conn.close()
 
 """Insert match score data into mysql"""
-def insert_match_score(match_score_df, match_id):
+def insert_match_score(match_score_df, match_cup_id):
     db_conn = router.mysql_volleyball_conn
-    cursor = db_conn.cursor()
 
-    query = """
-    INSERT INTO Match_Score (match_team_id, set1, set2, set3, set4, set5)
-    VALUES (%s, %s, %s, %s, %s, %s)
-    """
+    query = text("""
+    INSERT IGNORE INTO Match_Score (match_cup_id, match_team, set1, set2, set3, set4, set5)
+    VALUES (:match_cup_id, :match_team, :set1, :set2, :set3, :set4, :set5)
+    """)
 
     for row in match_score_df.to_dict(orient='records'):
-        team_name = row['team']
-        cursor.execute(
-            """SELECT match_team_id FROM Match_Team 
-                WHERE match_id = %s AND team_id = (SELECT team_id FROM Team WHERE team_name = %s)""",
-            (match_id, team_name),
-        )
-        result = cursor.fetchone()
+        paras = {
+        "match_cup_id": match_cup_id,
+        "match_team": row['team'],
+        "set1": row["set1"],
+        "set2": row["set2"],
+        "set3": row["set3"],
+        "set4": row["set4"],
+        "set5": row["set5"]
+        }
+        db_conn.execute(query, (paras))
 
-        if result:
-            match_team_id = result[0]
-            cursor.execute(query, (match_team_id, row["set1"], row["set2"], row["set3"], row["set4"], row["set5"]))
-
-
-    db_conn.commit()
-    cursor.close()
-
-def insert_referee(ref_df, match_id):
-    db_conn = router.mysql_volleyball_conn
-    cursor = db_conn.cursor()
-
-    query = """
-    INSERT INTO Match_Referee (match_id, referee_id, referee_type)
-    VALUES (%s, %s, %s)
-    """
-
-    for index, row in ref_df.to_dict(orient="records"): 
-        for ref_type, ref_name in row.items():  
-            if ref_name and ref_name.strip() != "N/A":  
-                # Check if the referee already exists
-                cursor.execute("""SELECT referee_id FROM Referee 
-                                    WHERE referee_name = %s""",
-                                (ref_name,))
-                result = cursor.fetchone()
-
-                if result:
-                    referee_id = result[0]
-                else:
-                    # Insert new referee and fetch the newly inserted ID
-                    cursor.execute("INSERT INTO Referee (referee_name) VALUES (%s)", (ref_name,))
-                    cursor.execute("SELECT referee_id FROM Referee WHERE referee_name = %s", (ref_name,))
-                    referee_id = cursor.fetchone()[0]
-
-                # Insert match-referee relationship
-                cursor.execute(query, (match_id, referee_id, ref_type))
 
     db_conn.commit()
-    cursor.close()
+    db_conn.close()
 
-def insert_coach(coach_df):
+def insert_referee(ref_df, match_cup_id):
     db_conn = router.mysql_volleyball_conn
-    cursor = db_conn.cursor()
 
-    query = """
-    INSERT INTO Coach (team_id, coach_name, coach_role)
-    VALUES (%s, %s, %s)
-    """
+    query = text("""
+    INSERT IGNORE INTO Match_Referee (match_cup_id, first_referee, second_referee)
+    VALUES (:match_cup_id, :first_referee, :second_referee)
+    """)
+
+    for row in ref_df.to_dict(orient="records"): 
+        paras = {
+        "match_cup_id": match_cup_id,
+        "first_referee": row['first_referee'],
+        "second_referee": row['second_referee'],
+        }
+        # Insert match-referee relationship
+        db_conn.execute(query, paras)
+
+    db_conn.commit()
+    db_conn.close()
+
+def insert_coach(coach_df, match_cup_id):
+    db_conn = router.mysql_volleyball_conn
+
+    query = text("""
+    INSERT IGNORE INTO Match_Coach (match_cup_id, team, head_coach, assistant_coach1, assistant_coach2)
+    VALUES (:match_cup_id, :team, :head_coach, :assistant_coach1, :assistant_coach2)
+    """)
 
     for row in coach_df.to_dict(orient="records"):
-        cursor.execute("SELECT team_id FROM Team WHERE team_name = %s", (row["team"],))
-        team_result = cursor.fetchone()
-
-        if team_result:
-            team_id = team_result[0]
-            cursor.execute(query, (team_id, row["head_coach"], "Head Coach"))
-            cursor.execute(query, (team_id, row["assistant_coach1"], "Assistant Coach 1"))
-            cursor.execute(query, (team_id, row["assistant_coach2"], "Assistant Coach 2"))
+        paras = {
+        "match_cup_id": match_cup_id,
+        "team": row["team"],
+        "head_coach": row["head_coach"],
+        "assistant_coach1": row["assistant_coach1"],
+        "assistant_coach2": row["assistant_coach2"],
+        }
+        db_conn.execute(query, paras)
 
     db_conn.commit()
-    cursor.close()
+    db_conn.close()
 
+"""
 def insert_player(player_df):
     db_conn = router.mysql_volleyball_conn
-    cursor = db_conn.cursor()
 
-    query = """
-    INSERT INTO Player (player_name, player_number, position)
-    VALUES (%s, %s, %s)
-    """
+    query = "    INSERT INTO Player (player_name, player_number, position)    VALUES (%s, %s, %s)    "
 
     for row in player_df.to_dict(orient="records"):
-        cursor.execute(query, (row["name"], row["number"], row["position"]))
+        db_conn.execute(query, (row["name"], row["number"], row["position"]))
 
     db_conn.commit()
-    cursor.close()
+    db_conn.close()
+"""
 
-def insert_player_stats(player_df, match_id):
+def insert_player_stats(player_df, match_cup_id):
     db_conn = router.mysql_volleyball_conn
-    cursor = db_conn.cursor()
 
-    query = """
-    INSERT INTO Player_Stats (match_team_id, tournament_player_id, attack_point, attack_total, block_point, serve_point, serve_total, receive_nice, receive_total, dig_nice, dig_total, set_nice, set_total, total_points)
-    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-    """
+    query = text("""
+    INSERT IGNORE INTO Player_Stats (match_cup_id, team, number, name, position, attack_point, attack_total, block_point, serve_point, serve_total, receive_nice, receive_total, dig_nice, dig_total, set_nice, set_total, total_points)
+    VALUES (:match_cup_id, :team, :number, :name, :position, :attack_point, :attack_total, :block_point, :serve_point, :serve_total, :receive_nice, :receive_total, :dig_nice, :dig_total, :set_nice, :set_total, :total_points)
+    """)
 
-    for _, row in player_df.to_dict(orient="records"):
-        cursor.execute(
-            "SELECT match_team_id FROM Match_Team WHERE match_id = %s AND team_id = (SELECT team_id FROM Team WHERE team_name = %s)",
-            (match_id, row["team"]),
-        )
-        match_team_result = cursor.fetchone()
-
-        cursor.execute(
-            "SELECT tournament_player_id FROM Tournament_Player WHERE player_id = (SELECT player_id FROM Player WHERE player_name = %s)",
-            (row["name"],),
-        )
-        player_result = cursor.fetchone()
-
-        if match_team_result and player_result:
-            match_team_id = match_team_result[0]
-            tournament_player_id = player_result[0]
-
-            cursor.execute(
-                query,
-                (
-                    match_team_id,
-                    tournament_player_id,
-                    row["attack_point"],
-                    row["attack_total"],
-                    row["block_point"],
-                    row["serve_point"],
-                    row["serve_total"],
-                    row["receive_nice"],
-                    row["receive_total"],
-                    row["dig_nice"],
-                    row["dig_total"],
-                    row["set_nice"],
-                    row["set_total"],
-                    row["total_points"],
-                ),
-            )
+    for row in player_df.to_dict(orient="records"):
+        paras = {
+        "match_cup_id": match_cup_id,
+        "team": row["team"],
+        "number": row["number"],
+        "name": row["name"],
+        "position": row["position"],
+        "attack_point": row["attack_point"],
+        "attack_total": row["attack_total"],
+        "block_point": row["block_point"],
+        "serve_point": row["serve_point"],
+        "serve_total": row["serve_total"],
+        "receive_nice": row["receive_nice"],
+        "receive_total": row["receive_total"],
+        "dig_nice": row["dig_nice"],
+        "dig_total": row["dig_total"],
+        "set_nice": row["set_nice"],
+        "set_total": row["set_total"],
+        "total_points": row["total_points"],
+        }
+        db_conn.execute(query,paras)
 
     db_conn.commit()
-    cursor.close()
+    db_conn.close()
 
 ###################################################################################
 
@@ -436,21 +407,20 @@ def start(url):
 
     match_score_df = scrape_match_score(url)
     match_score_df = check_match_score_schema(match_score_df.copy())
-    match_id = match_df.iloc[0]["index"]
-    insert_match_score(match_score_df,match_id)
+    match_cup_id = str(match_df.iloc[0]["index"]) + "_" + str(cup)
+    insert_match_score(match_score_df,match_cup_id)
 
     ref_df = scrape_ref(url)
     ref_df = check_referee_schema(ref_df)
-    insert_referee(ref_df,match_id)
+    insert_referee(ref_df,match_cup_id)
 
     coach_df = scrape_coach(url)
     coach_df = check_coach_schema(coach_df.copy())
-    insert_coach(coach_df)
+    insert_coach(coach_df,match_cup_id)
 
     player_df = scrape_player(url)
     player_df = check_player_schema(player_df.copy())
-    insert_player(player_df)
-    insert_player_stats(player_df,match_id)
+    insert_player_stats(player_df,match_cup_id)
 
     print(f"Data in {cup} has successfully proceeded")
 
