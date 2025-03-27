@@ -28,5 +28,6 @@ pyenv local 3.9.21
 
 # Install poetry
 pip install poetry
+poetry env use 3.9.21
 poetry sync
 PYTHONPATH=. poetry run celery -A worker:app worker --loglevel=info

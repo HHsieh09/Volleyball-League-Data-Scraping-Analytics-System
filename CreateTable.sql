@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS Matches (
     match_time TIME,
     arena VARCHAR(255),
     duration TIME,
+    match_type VARCHAR(255),
     FOREIGN KEY (tournament_id) REFERENCES Tournament(tournament_id)
 );
 

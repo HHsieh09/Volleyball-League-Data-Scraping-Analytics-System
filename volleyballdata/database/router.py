@@ -2,7 +2,7 @@ import time
 import typing
 from loguru import logger
 from sqlalchemy import engine, text
-from volleyballdata import clients
+from volleyballdata.database import clients
 
 def check_alive(connect: engine.base.Connection,):
     connect.execute(text("Select 1 + 1"))
