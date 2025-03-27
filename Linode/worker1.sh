@@ -21,13 +21,11 @@ exec $SHELL
 
 # 安裝 Python（可改其他版本）
 PYTHON_VERSION="3.12.9"
-echo "📥 安裝 Python $PYTHON_VERSION"
+echo "安裝 Python $PYTHON_VERSION"
 pyenv install -s $PYTHON_VERSION
 pyenv global $PYTHON_VERSION
 
 # Install poetry
 pyenv install poetry
 poetry sync
-DOCKER_INDICATOR=sudo find / -name docker-compose
-export PATH="$DOCKER_INDICATOR:$PATH"
-$DOCKER_INDICATOR/docker-compose -f rabbitmq.yml up
+PYTHONPATH=. poetry run celery -A worker:app worker --loglevel=info
