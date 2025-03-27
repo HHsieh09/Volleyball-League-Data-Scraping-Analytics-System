@@ -16,7 +16,7 @@ echo 'export LANG=C.UTF-8' >> ~/.bashrc
 echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
 echo 'export PATH="$PYENV_ROOT/shims:$PATH"' >> ~/.bashrc
 echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
-echo 'if command -v pyenv 1>/dev/null 2>&1; then\n eval "$(pyenv init -)";\n fi' >> ~/.bashrc
+echo -e 'if command -v pyenv 1>/dev/null 2>&1; then\n eval "$(pyenv init -)"\nfi' >> ~/.bashrc
 exec $SHELL
 
 # 安裝 Python（可改其他版本）
