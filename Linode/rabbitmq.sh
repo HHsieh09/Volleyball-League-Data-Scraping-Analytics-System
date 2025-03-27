@@ -20,13 +20,13 @@ echo 'if command -v pyenv 1>/dev/null 2>&1; then\n eval "$(pyenv init -)";\n fi'
 exec $SHELL
 
 # 安裝 Python（可改其他版本）
-PYTHON_VERSION="3.12.9"
-echo "安裝 Python $PYTHON_VERSION"
-pyenv install -s $PYTHON_VERSION
-pyenv global $PYTHON_VERSION
+echo "安裝 Python 3.9.21"
+pyenv install 3.9.21
+pyenv global 3.9.21
+pyenv local 3.9.21
 
 # Install poetry
-pyenv install poetry
+pip install poetry
 poetry sync
 DOCKER_INDICATOR=sudo find / -name docker-compose
 export PATH="$DOCKER_INDICATOR:$PATH"

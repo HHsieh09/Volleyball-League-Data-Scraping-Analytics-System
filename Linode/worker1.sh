@@ -1,5 +1,6 @@
 #!/bin/bash
 # git clone https://github.com/HHsieh09/Volleyball-League-Data-Scraping-Analytics-System.git
+# cd Volleyball-League-Data-Scraping-Analytics-System
 
 echo "安裝 pyenv 所需套件..."
 sudo apt-get update
@@ -20,12 +21,12 @@ echo -e 'if command -v pyenv 1>/dev/null 2>&1; then\n eval "$(pyenv init -)"\nfi
 exec $SHELL
 
 # 安裝 Python（可改其他版本）
-PYTHON_VERSION="3.12.9"
-echo "安裝 Python $PYTHON_VERSION"
-pyenv install -s $PYTHON_VERSION
-pyenv global $PYTHON_VERSION
+echo "安裝 Python 3.9.21"
+pyenv install 3.9.21
+pyenv global 3.9.21
+pyenv local 3.9.21
 
 # Install poetry
-pyenv install poetry
+pip install poetry
 poetry sync
 PYTHONPATH=. poetry run celery -A worker:app worker --loglevel=info
