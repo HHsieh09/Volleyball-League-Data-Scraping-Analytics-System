@@ -1,4 +1,8 @@
 from celery import Celery
+from volleyballdata.config import WORKER_ACCOUNT, WORKER_PASSWORD, MESSAGE_QUEUE_HOST, MESSAGE_QUEUE_PORT
+
+broker = (f"pyamqp://{WORKER_ACCOUNT}:{WORKER_PASSWORD}@"
+          f"{MESSAGE_QUEUE_HOST}:{MESSAGE_QUEUE_PORT}")
 
 app = Celery(
     'task',
@@ -7,5 +11,5 @@ app = Celery(
     # 連線到 rabbitmq,
     # pyamqp://user:password@localhost:5672/
     # 本書的帳號密碼都是 worker
-    broker="pyamqp://worker:worker@66.228.37.189:5672/",
+    broker=broker,
 )
