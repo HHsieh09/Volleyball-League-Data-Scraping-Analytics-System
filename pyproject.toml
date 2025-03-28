@@ -23,6 +23,8 @@ worker = "^2018.4.1"
 celery = "^5.4.0"
 amqp = "^5.3.1"
 kombu = "^5.5.1"
+fastapi = "0.63.0"
+uvicorn = "0.14.0"
 
 [tool.poetry.dev-dependencies]
 
