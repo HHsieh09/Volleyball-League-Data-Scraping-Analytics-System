@@ -1,0 +1,13 @@
+version: '3.0'
+
+services:
+  crawler:
+    image: crawler:7.2.1
+    command: poetry run celery -A volleyballdata.tasks.worker worker --loglevel=info
+    restart: always
+    networks:
+      - vbnetwork
+
+networks:
+  vbnetwork:
+    external: true

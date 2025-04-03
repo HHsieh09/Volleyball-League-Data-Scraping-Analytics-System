@@ -27,7 +27,7 @@ services:
       - mysql:/var/lib/mysql
 
     networks:
-      - dev
+      - vbnetwork
 
     restart: always
 
@@ -51,10 +51,10 @@ services:
       - mysql
 
     networks:
-      - dev
+      - vbnetwork
 
 networks:
-  dev:
+  vbnetwork:
 
 volumes:
   mysql:

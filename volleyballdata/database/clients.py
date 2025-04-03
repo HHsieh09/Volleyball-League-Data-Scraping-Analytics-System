@@ -11,8 +11,8 @@ def get_mysql_volleyballdata_conn() -> engine.base.Connection:
     """
     #address = "mysql+pymysql://user:test@host.docker.internal:3306/volleyballdb"
     address = (
-    f"mysql+pymysql://{MYSQL_DATA_USER}:{MYSQL_DATA_PASSWORD}"
-    f"@{MYSQL_DATA_HOST}:{MYSQL_DATA_PORT}/{MYSQL_DATA_DATABASE}"
+    f"mysql+pymysql://{MYSQL_USER}:{MYSQL_PASSWORD}"
+    f"@{MYSQL_HOST}:{MYSQL_PORT}/{MYSQL_DATABASE}"
     )
     engine = create_engine(address)
     
