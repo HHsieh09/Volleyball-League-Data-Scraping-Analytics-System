@@ -6,12 +6,12 @@ This project is a distributed web scraping and data analytics system for collect
 
 ## Features
 
-- 🕷️ **Web Scraper**: Efficiently scrapes data from volleyball league match pages.
-- 🧱 **MySQL Database**: Stores cleaned and normalized match data in a structured schema.
-- ⚙️ **Distributed Processing**: Uses **Celery** and **RabbitMQ** to scale scraping tasks.
-- 📊 **Analytics Ready**: Data is pre-processed and ready for visualization or model training.
-- 🧠 **Match Type Handling**: Automatically distinguishes and adapts to match types (e.g., playoffs, challenge rounds).
-- 📎 **Modular Architecture**: Easily extendable to support additional sports or new data sources.
+- **Web Scraper**: Efficiently scrapes data from volleyball league match pages.
+- **MySQL Database**: Stores cleaned and normalized match data in a structured schema.
+- **Distributed Processing**: Uses **Celery** and **RabbitMQ** to scale scraping tasks.
+- **Analytics Ready**: Data is pre-processed and ready for visualization or model training.
+- **Match Type Handling**: Automatically distinguishes and adapts to match types (e.g., playoffs, challenge rounds).
+- **Modular Architecture**: Easily extendable to support additional sports or new data sources.
 
 ## Project Structure
 
