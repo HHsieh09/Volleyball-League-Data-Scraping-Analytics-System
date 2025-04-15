@@ -1,5 +1,7 @@
 # Volleyball League Data Scraping & Analytics System
 
+![GitHub repo size](https://img.shields.io/github/repo-size/HHsieh09/Volleyball-League-Data-Scraping-Analytics-System) ![GitHub contributors](https://img.shields.io/github/contributors/HHsieh09/Volleyball-League-Data-Scraping-Analytics-System) ![GitHub issues](https://img.shields.io/github/issues/HHsieh09/Volleyball-League-Data-Scraping-Analytics-System)
+
 This project is a distributed web scraping and data analytics system for collecting, processing, and analyzing volleyball league data. It is designed to automate the extraction of structured match data—including teams, players, scores, coaches, and referees—from official websites and store it in a MySQL database for further analysis. It supports distributed crawling using **Celery**, **RabbitMQ**, and **BeautifulSoup**, and is extensible for real-time sports analytics applications.
 
 ## Features
