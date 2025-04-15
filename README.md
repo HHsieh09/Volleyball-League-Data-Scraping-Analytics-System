@@ -15,7 +15,11 @@ This project is a distributed web scraping and data analytics system for collect
 
 ## Project Structure
 
-
+## TODOs
+- [ ] Add user-facing web dashboard (Flask)
+- [ ] Integrate ML model for match outcome prediction
+- [ ] Improve scraping robustness with retry logic
+- [ ] Dockerize full system for easier deployment
 
 ## Tech Stack
 
