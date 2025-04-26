@@ -6,8 +6,12 @@ services:
     environment:
       AGENT_CLUSTER_ADDR: task.agent # Sets the address where the agent will communicate with other agents in the Swarm cluster. tasks.agent is a DNS name resolved by Docker Swarm to point to all agent tasks.
     volumes:
-      - /var/run/docker.sock: /var/run/docker.sock # Mounts the Docker socket from the host to the container, allowing the agent to interact with the Docker API on the host
-      - /var/lib/docker/volumes: /var/lib/docker/volumes # Mounts the Docker volumes directory, giving the agent access to volume data
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock # Mounts the Docker socket from the host to the container, allowing the agent to interact with the Docker API on the host
+      - type: bind
+        source: /var/lib/docker/volumes
+        target: /var/lib/docker/volumes # Mounts the Docker volumes directory, giving the agent access to volume data
     networks:
       - agent_network
     deploy:
