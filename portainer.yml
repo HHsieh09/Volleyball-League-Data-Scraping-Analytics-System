@@ -1,0 +1,43 @@
+version: '3.2'
+
+services:
+  agent:
+    image: portainer/agent
+    environment:
+      AGENT_CLUSTER_ADDR: task.agent # Sets the address where the agent will communicate with other agents in the Swarm cluster. tasks.agent is a DNS name resolved by Docker Swarm to point to all agent tasks.
+    volumes:
+      - /var/run/docker.sock: /var/run/docker.sock # Mounts the Docker socket from the host to the container, allowing the agent to interact with the Docker API on the host
+      - /var/lib/docker/volumes: /var/lib/docker/volumes # Mounts the Docker volumes directory, giving the agent access to volume data
+    networks:
+      - agent_network
+    deploy:
+      mode: global # Runs one instance of the agent on every node in the Swarm cluster (global mode)
+      placement:
+        constraints: [node.platform.os == linux] # Ensures the agent only runs on Linux nodes
+
+    portainer:
+      image: portainer/portainer-ce:2.0.1
+      command: -H tcp://tasks.agent:9001 --tlsskipverify
+      #Configures Portainer to connect to the agent service over TCP at port 9001 (the agent’s listening port).
+      #--tlsskipverify disables TLS verification for simplicity (not recommended for production due to security risks).
+      ports:
+        - "9000:9000"
+        - "8000:8000"
+      volumes:
+        - portainer_data:/data
+      networks:
+        - agent_network
+      deploy:
+        mode: replicated # Runs a fixed number of instances (not global, unlike the agent).
+        replicas: 1 # Runs exactly one instance of the Portainer service
+        placement:
+          constraints: [node.role == manager] # Ensures the Portainer service only runs on a manager node in the Swarm cluster for high availability and access to cluster-wide state
+
+networks:
+  agent_network:
+    driver: overlay
+    # Creates an overlay network named agent_network. 
+    # Overlay networks allow containers on different Swarm nodes to communicate securely over a virtual network
+
+volumes:
+  portainer_data
