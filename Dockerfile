@@ -13,3 +13,5 @@ RUN pip install poetry
 RUN poetry sync
 
 RUN VERSION=RELEASE python genenv.py
+
+CMD ["poetry", "run", "uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8888"]

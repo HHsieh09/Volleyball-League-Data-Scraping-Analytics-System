@@ -1,0 +1,14 @@
+version: '3.0'
+services: 
+  api:
+    image: api:7.2.2
+    ports:
+      - 8888:8888
+    hostname: "api"
+    restart: always
+    networks:
+      - vbnetwork
+
+networks:
+  vbnetwork:
+    external: true
