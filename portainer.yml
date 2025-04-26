@@ -4,7 +4,7 @@ services:
   agent:
     image: portainer/agent
     environment:
-      AGENT_CLUSTER_ADDR: task.agent # Sets the address where the agent will communicate with other agents in the Swarm cluster. tasks.agent is a DNS name resolved by Docker Swarm to point to all agent tasks.
+      AGENT_CLUSTER_ADDR: tasks.agent # Sets the address where the agent will communicate with other agents in the Swarm cluster. tasks.agent is a DNS name resolved by Docker Swarm to point to all agent tasks.
     volumes:
       - type: bind
         source: /var/run/docker.sock
