@@ -44,4 +44,4 @@ networks:
     # Overlay networks allow containers on different Swarm nodes to communicate securely over a virtual network
 
 volumes:
-  portainer_data
+  portainer_data:
