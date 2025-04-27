@@ -14,7 +14,7 @@ def send_tasks():
         match_id = 1
 
         while no_data_count < 5:
-            url = f'http://114.35.229.141/_handler/Match.ashx?CupID={cup}&MatchID={match}&SetNum=0'
+            url = f'http://114.35.229.141/_handler/Match.ashx?CupID={cup}&MatchID={match_id}&SetNum=0'
 
             if is_valid_match(url):
                 crawler_match.delay(url)
