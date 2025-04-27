@@ -5,6 +5,12 @@ services:
     image: hhsiehde/crawler:7.2.1 # crawler:7.2.1
     command: poetry run celery -A volleyballdata.tasks.worker worker --loglevel=info
     restart: always
+    environment:
+      MYSQL_HOST=mysql
+      MYSQL_USER=user
+      MYSQL_PASSWORD=test
+      MYSQL_PORT=3306
+      MYSQL_DATABASE=volleyballdb
     deploy:
       mode: replicated
       replicas: 1
