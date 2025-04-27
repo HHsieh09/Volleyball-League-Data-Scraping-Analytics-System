@@ -1,10 +1,157 @@
 version: '3.0'
 
 services:
-  crawler:
+  crawler_cup_13:
     image: hhsiehde/crawler:7.2.1 # crawler:7.2.1
     working_dir: /volleyballdata/volleyballdata
-    command: poetry run celery -A tasks.worker worker --loglevel=info
+    command: poetry run celery -A tasks.worker worker --loglevel=info --queues=cup_13
+    restart: always
+    environment:
+      - MYSQL_HOST=mysql
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=test
+      - MYSQL_PORT=3306
+      - MYSQL_DATABASE=volleyballdb
+      - MESSAGE_QUEUE_HOST=rabbitmq
+      - MESSAGE_QUEUE_PORT=5672
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.labels.crawler == true]
+    networks:
+      - vbnetwork
+
+  crawler_cup_14:
+    image: hhsiehde/crawler:7.2.1 # crawler:7.2.1
+    working_dir: /volleyballdata/volleyballdata
+    command: poetry run celery -A tasks.worker worker --loglevel=info --queues=cup_14
+    restart: always
+    environment:
+      - MYSQL_HOST=mysql
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=test
+      - MYSQL_PORT=3306
+      - MYSQL_DATABASE=volleyballdb
+      - MESSAGE_QUEUE_HOST=rabbitmq
+      - MESSAGE_QUEUE_PORT=5672
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.labels.crawler == true]
+    networks:
+      - vbnetwork
+
+  crawler_cup_15:
+    image: hhsiehde/crawler:7.2.1 # crawler:7.2.1
+    working_dir: /volleyballdata/volleyballdata
+    command: poetry run celery -A tasks.worker worker --loglevel=info --queues=cup_15
+    restart: always
+    environment:
+      - MYSQL_HOST=mysql
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=test
+      - MYSQL_PORT=3306
+      - MYSQL_DATABASE=volleyballdb
+      - MESSAGE_QUEUE_HOST=rabbitmq
+      - MESSAGE_QUEUE_PORT=5672
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.labels.crawler == true]
+    networks:
+      - vbnetwork
+
+  crawler_cup_16:
+    image: hhsiehde/crawler:7.2.1 # crawler:7.2.1
+    working_dir: /volleyballdata/volleyballdata
+    command: poetry run celery -A tasks.worker worker --loglevel=info --queues=cup_16
+    restart: always
+    environment:
+      - MYSQL_HOST=mysql
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=test
+      - MYSQL_PORT=3306
+      - MYSQL_DATABASE=volleyballdb
+      - MESSAGE_QUEUE_HOST=rabbitmq
+      - MESSAGE_QUEUE_PORT=5672
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.labels.crawler == true]
+    networks:
+      - vbnetwork
+
+  crawler_cup_17:
+    image: hhsiehde/crawler:7.2.1 # crawler:7.2.1
+    working_dir: /volleyballdata/volleyballdata
+    command: poetry run celery -A tasks.worker worker --loglevel=info --queues=cup_17
+    restart: always
+    environment:
+      - MYSQL_HOST=mysql
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=test
+      - MYSQL_PORT=3306
+      - MYSQL_DATABASE=volleyballdb
+      - MESSAGE_QUEUE_HOST=rabbitmq
+      - MESSAGE_QUEUE_PORT=5672
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.labels.crawler == true]
+    networks:
+      - vbnetwork
+
+  crawler_cup_18:
+    image: hhsiehde/crawler:7.2.1 # crawler:7.2.1
+    working_dir: /volleyballdata/volleyballdata
+    command: poetry run celery -A tasks.worker worker --loglevel=info --queues=cup_18
+    restart: always
+    environment:
+      - MYSQL_HOST=mysql
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=test
+      - MYSQL_PORT=3306
+      - MYSQL_DATABASE=volleyballdb
+      - MESSAGE_QUEUE_HOST=rabbitmq
+      - MESSAGE_QUEUE_PORT=5672
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.labels.crawler == true]
+    networks:
+      - vbnetwork
+
+  crawler_cup_19:
+    image: hhsiehde/crawler:7.2.1 # crawler:7.2.1
+    working_dir: /volleyballdata/volleyballdata
+    command: poetry run celery -A tasks.worker worker --loglevel=info --queues=cup_19
+    restart: always
+    environment:
+      - MYSQL_HOST=mysql
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=test
+      - MYSQL_PORT=3306
+      - MYSQL_DATABASE=volleyballdb
+      - MESSAGE_QUEUE_HOST=rabbitmq
+      - MESSAGE_QUEUE_PORT=5672
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.labels.crawler == true]
+    networks:
+      - vbnetwork
+
+  crawler_cup_20:
+    image: hhsiehde/crawler:7.2.1 # crawler:7.2.1
+    working_dir: /volleyballdata/volleyballdata
+    command: poetry run celery -A tasks.worker worker --loglevel=info --queues=cup_20
     restart: always
     environment:
       - MYSQL_HOST=mysql

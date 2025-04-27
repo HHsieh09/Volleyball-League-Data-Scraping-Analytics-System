@@ -33,9 +33,22 @@ def get_cupid(url):
 
     #Get the cupid from the URL
     cupid = urlelement.get('CupID')
+    
 
     if cupid:
         return int(cupid[0])
+    else:
+        ("N/A")
+
+
+def get_matchid(url):
+    parse_url = urlparse(url)
+    urlelement = parse_qs(parse_url.query)
+
+    matchid = urlelement.get('MatchID')
+
+    if matchid:
+        return int(matchid[0])
     else:
         ("N/A")    
 
@@ -246,10 +259,11 @@ def scrape_player(url):
 
 def start(url):
     cup = get_cupid(url)
+    match = get_matchid(url)
 
     match_df = scrape_match(url)
     match_df = check_match_schema(match_df.copy())
-    insert_match(match_df,cup)
+    insert_match(match_df,cup,match)
 
     match_score_df = scrape_match_score(url)
     match_score_df = check_match_score_schema(match_score_df.copy())
@@ -277,9 +291,13 @@ def start(url):
 
 
 if __name__ == '__main__':
-    for match_id in range(1,220):
+    for match_id in range(1,301):
         url = f'http://114.35.229.141/_handler/Match.ashx?CupID=13&MatchID={match_id}&SetNum=0'
+        '''
         if is_valid_match(url):
             player_df = scrape_player(url)
             player_df = check_player_schema(player_df.copy())
             print(player_df)
+        '''
+        match = get_matchid(url)
+        print(match)

@@ -17,10 +17,10 @@ def send_tasks():
             url = f'http://114.35.229.141/_handler/Match.ashx?CupID={cup}&MatchID={match_id}&SetNum=0'
 
             if is_valid_match(url):
-                crawler_match.delay(url)
-                print("Send Successfully: {url}")
+                crawler_match.apply_async(args=[url], queue=f'cup_{cup}')
+                print(f"Send Successfully: {url}")
             else:
-                print("Failed Sending ●∩●: {url}")
+                print(f"Failed Sending ●∩●: {url}")
 
             match_id += 1
 

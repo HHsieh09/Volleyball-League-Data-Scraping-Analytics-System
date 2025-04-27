@@ -6,7 +6,7 @@ from volleyballdata.database.router import Router
 router = Router()
 
 """Insert match data into mysql"""
-def insert_match(match_df, cup):
+def insert_match(match_df, cup, matchid):
     db_conn = router.mysql_volleyball_conn
 
     query = text("""
@@ -17,7 +17,7 @@ def insert_match(match_df, cup):
     row = match_df.iloc[0]
 
     paras = {
-    "match_cup_id": f"{row['index']}_{cup}",
+    "match_cup_id": f"{matchid}_{cup}",
     "match_id": row["index"],
     "tournament_id": cup,
     "match_date": row["date"],
