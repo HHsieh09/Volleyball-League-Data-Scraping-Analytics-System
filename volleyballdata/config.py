@@ -1,6 +1,6 @@
 import os
 
-MYSQL_HOST = os.environ.get("MYSQL_HOST", "mysql_container")
+MYSQL_HOST = os.environ.get("MYSQL_HOST", "mysql")
 MYSQL_USER = os.environ.get("MYSQL_USER","user")
 MYSQL_PASSWORD = os.environ.get("MYSQL_PASSWORD","test")
 MYSQL_PORT = int(os.environ.get("MYSQL_PORT","3306"))
