@@ -6,6 +6,14 @@ services:
       - 8888:8888
     hostname: "api"
     restart: always
+    environment:
+      - MYSQL_HOST=mysql
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=test
+      - MYSQL_PORT=3306
+      - MYSQL_DATABASE=volleyballdb
+      - MESSAGE_QUEUE_HOST=rabbitmq
+      - MESSAGE_QUEUE_PORT=5672
     deploy:
       mode: replicated
       replicas: 1
