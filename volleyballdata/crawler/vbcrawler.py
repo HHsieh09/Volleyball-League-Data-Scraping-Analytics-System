@@ -180,13 +180,13 @@ def scrape_coach(url: str,) -> pd.DataFrame:
         raw_coach = row.get_text(strip=True)
 
         team, coaches = raw_coach.split('：')
-        coach = coaches.split('、')
+        coach_list = coaches.split('、')
 
         coach_data.append({
             "team": team,
-            "head_coach":coach[0],
-            "assistant_coach1":coach[1],
-            "assistant_coach2":coach[2],
+            "head_coach":coach_list[0] if len(coach_list) > 0 else "N/A",
+            "assistant_coach1":coach_list[1] if len(coach_list) > 1 else "N/A",
+            "assistant_coach2":coach_list[2] if len(coach_list) > 2 else "N/A",
         })
 
     coach_df = pd.DataFrame(coach_data)
@@ -278,8 +278,8 @@ def start(url):
 
 if __name__ == '__main__':
     for match_id in range(1,220):
-        url = f'http://114.35.229.141/_handler/Match.ashx?CupID=20&MatchID={match_id}&SetNum=0'
+        url = f'http://114.35.229.141/_handler/Match.ashx?CupID=13&MatchID={match_id}&SetNum=0'
         if is_valid_match(url):
-            start(url)
-
-
+            player_df = scrape_player(url)
+            player_df = check_player_schema(player_df.copy())
+            print(player_df)

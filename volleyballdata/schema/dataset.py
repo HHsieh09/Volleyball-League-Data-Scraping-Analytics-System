@@ -53,7 +53,7 @@ class Coach(BaseModel):
 
 class Player(BaseModel):
     team: str
-    number: str
+    number: int
     name: str
     position: str
     attack_point: int
@@ -69,9 +69,11 @@ class Player(BaseModel):
     set_total: int
     total_points: int
 
-    @validator("attack_point","attack_total","block_point","serve_point","serve_total",
+    @validator("number","attack_point","attack_total","block_point","serve_point","serve_total",
                "receive_nice","receive_total","dig_nice","dig_total","set_nice","set_total","total_points")
     def convert_stats(cls,value):
+        if value in (None, "", " "):
+            return 0
         if isinstance(value,str):
             return int(value)
         return value

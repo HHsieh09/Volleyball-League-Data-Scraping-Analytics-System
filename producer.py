@@ -10,19 +10,17 @@ def send_tasks():
 
     for cup in cupids:
         print(f"Scan Cup ID: {cup}")
-        no_data_count = 0
         match_id = 1
+        max_match_id = 300
 
-        while no_data_count < 5:
+        while match_id <=  max_match_id:
             url = f'http://114.35.229.141/_handler/Match.ashx?CupID={cup}&MatchID={match_id}&SetNum=0'
 
             if is_valid_match(url):
                 crawler_match.delay(url)
                 print("Send Successfully: {url}")
-                no_data_count = 0 # Reset if there is valid data
             else:
                 print("Failed Sending ●∩●: {url}")
-                no_data_count += 1
 
             match_id += 1
 
