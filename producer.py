@@ -1,17 +1,38 @@
 from volleyballdata.tasks.tasks import crawler_match
 from volleyballdata.crawler.vbcrawler import is_valid_match
- 
-# 發送任務有兩種方式
-# 1.
-#13-20
-cupids = list(range(13, 21))  # 13 ~ 20
-max_match_id = 300  # 假設最多 300，實測後調整
 
-for cup in cupids:
-    for match in range(1, max_match_id):
-        url = f'http://114.35.229.141/_handler/Match.ashx?CupID={cup}&MatchID={match}&SetNum=0'
-        if is_valid_match(url):
-            crawler_match.delay(url)
-# 2.
-# task = crawler.s(x=0)
-# task.apply_async()
+
+def send_tasks():
+    # 發送任務有兩種方式
+    # 1.
+    #13-20
+    cupids = list(range(13, 21))  # 13 ~ 20
+
+    for cup in cupids:
+        print(f"Scan Cup ID: {cup}")
+        no_data_count = 0
+        match_id = 1
+
+        while no_data_count < 5:
+            url = f'http://114.35.229.141/_handler/Match.ashx?CupID={cup}&MatchID={match}&SetNum=0'
+
+            if is_valid_match(url):
+                crawler_match.delay(url)
+                print("Send Successfully: {url}")
+                no_data_count = 0 # Reset if there is valid data
+            else:
+                print("Failed Sending ●∩●: {url}")
+                no_data_count += 1
+
+            match_id += 1
+
+        '''
+        for match in range(1, max_match_id):
+            url = f'http://114.35.229.141/_handler/Match.ashx?CupID={cup}&MatchID={match}&SetNum=0'
+        '''
+    # 2.
+    # task = crawler.s(x=0)
+    # task.apply_async()
+
+if __name__ == "__main__":
+    send_tasks()
