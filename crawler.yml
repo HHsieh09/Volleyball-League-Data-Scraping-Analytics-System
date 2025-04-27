@@ -2,9 +2,14 @@ version: '3.0'
 
 services:
   crawler:
-    image: crawler:7.2.1
+    image: hhsiehde/crawler:7.2.1 # crawler:7.2.1
     command: poetry run celery -A volleyballdata.tasks.worker worker --loglevel=info
     restart: always
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.labels.crawler == true]
     networks:
       - vbnetwork
 
