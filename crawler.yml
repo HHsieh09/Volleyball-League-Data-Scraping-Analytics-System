@@ -3,6 +3,7 @@ version: '3.0'
 services:
   crawler:
     image: hhsiehde/crawler:7.2.1 # crawler:7.2.1
+    working_dir: /volleyballdata
     command: poetry run celery -A volleyballdata.tasks.worker worker --loglevel=info
     restart: always
     environment:
