@@ -49,11 +49,11 @@ services:
       MYSQL_PASSWORD: test
       MYSQL_USER: user
 
-    links:
-      - mysql:db
+    #links:
+    #  - mysql:db
 
     ports:
-      - 8000:80
+      - 8080:80
 
     depends_on:
       - mysql
