@@ -26,6 +26,12 @@ services:
     volumes:
       - mysql:/var/lib/mysql
 
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement: 
+        constraints: [node.labels.mysql =- true]
+
     networks:
       - vbnetwork
 
@@ -38,8 +44,10 @@ services:
     container_name: phpmyadmin_container
 
     environment:
-      PMA_HOST: 172.17.0.1
+      PMA_HOST: mysql #old:172.17.0.1
       MYSQL_ROOT_PASSWORD: test
+      MYSQL_PASSWORD: test
+      MYSQL_USER: user
 
     #links:
     #  - mysql:db
@@ -49,6 +57,12 @@ services:
 
     depends_on:
       - mysql
+
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.labels.mysql == true]
 
     networks:
       - vbnetwork
