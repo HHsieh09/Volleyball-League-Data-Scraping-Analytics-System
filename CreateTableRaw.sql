@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS Matches (
     match_cup_id VARCHAR(255) PRIMARY KEY,
-    match_id INT,
+    match_id VARCHAR(255),
     tournament_id INT,
     match_date DATE,
     match_time TIME,

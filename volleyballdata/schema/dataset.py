@@ -8,7 +8,7 @@ class Match(BaseModel):
     group: str
     week: int
     arena: str
-    index: int
+    index: str
     date: datetime
     time: time
     duration: time

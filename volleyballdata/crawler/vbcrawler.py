@@ -291,7 +291,7 @@ def start(url):
 
 
 if __name__ == '__main__':
-    for match_id in range(1,301):
+    for match_id in range(99,105):
         url = f'http://114.35.229.141/_handler/Match.ashx?CupID=13&MatchID={match_id}&SetNum=0'
         '''
         if is_valid_match(url):
@@ -299,5 +299,11 @@ if __name__ == '__main__':
             player_df = check_player_schema(player_df.copy())
             print(player_df)
         '''
+        '''
         match = get_matchid(url)
         print(match)
+        '''
+        if is_valid_match(url):
+            match_df = scrape_match(url)
+            match_df = check_match_schema(match_df.copy())
+            print(match_df)
