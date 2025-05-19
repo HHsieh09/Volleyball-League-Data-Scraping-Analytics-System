@@ -3,7 +3,7 @@ import requests
 import pandas as pd
 from bs4 import BeautifulSoup
 from volleyballdata.schema.dataset import check_match_schema, check_coach_schema, check_match_score_schema, check_player_schema, check_referee_schema
-#from volleyballdata.database.db import insert_coach, insert_match, insert_match_score, insert_player_stats, insert_referee 
+from volleyballdata.database.db import insert_coach, insert_match, insert_match_score, insert_player_stats, insert_referee 
 from urllib.parse import urlparse, parse_qs
 
 ################ Define functions for verifying match url is valid ################
