@@ -3,7 +3,7 @@ import requests
 import pandas as pd
 from bs4 import BeautifulSoup
 from volleyballdata.schema.dataset import check_match_schema, check_coach_schema, check_match_score_schema, check_player_schema, check_referee_schema
-from volleyballdata.database.db import insert_coach, insert_match, insert_match_score, insert_player_stats, insert_referee 
+#from volleyballdata.database.db import insert_coach, insert_match, insert_match_score, insert_player_stats, insert_referee 
 from urllib.parse import urlparse, parse_qs
 
 ################ Define functions for verifying match url is valid ################
@@ -76,8 +76,10 @@ def scrape_match(url: str,) -> pd.DataFrame:
     match_info = soup.find('h3').get_text(strip=True)
 
     """Group the capturing information into groups"""
-    match_org = re.search(r'(.*?) 第(\d+)週\((.*?)\)\s+編號：(\d+)\s+\((\d+)月(\d+)日\s+(\d+:\d+)\)\s+歷時\s+(\d+:\d+)', match_info)
+    match_org = re.search(r'(.*?) 第(\d+)週\((.*?)\)\s+編號：(.+?)\s+\((\d+)月(\d+)日\s+(\d+:\d+)\)\s+歷時\s+(\d+:\d+)', match_info)
     match_special = re.search(r'(.*?)\s+(挑戰賽|季後賽)?\((.*?)\)\s+編號：(.+?)\s+\((\d+)月(\d+)日\s+(\d+:\d+)\)\s+歷時\s+(\d+:\d+)', match_info)
+
+    cupidyear = get_cupid(url)
 
     if match_org:
         group = match_org.group(1).strip()
@@ -87,7 +89,7 @@ def scrape_match(url: str,) -> pd.DataFrame:
         month = match_org.group(5).zfill(2)
         day = match_org.group(6).zfill(2)
         month_int = int(month)
-        year = 2024 if month_int >= 10 else 2025
+        year = 2004+cupidyear if month_int >= 10 else 2005+cupidyear
         date = f"{year}/{month}/{day}"
         time = match_org.group(7).strip()
         duration = match_org.group(8).strip()
@@ -291,8 +293,8 @@ def start(url):
 
 
 if __name__ == '__main__':
-    for match_id in range(99,105):
-        url = f'http://114.35.229.141/_handler/Match.ashx?CupID=13&MatchID={match_id}&SetNum=0'
+    for match_id in range(1,2):
+        url = f'http://114.35.229.141/_handler/Match.ashx?CupID=16&MatchID={match_id}&SetNum=0'
         '''
         if is_valid_match(url):
             player_df = scrape_player(url)
