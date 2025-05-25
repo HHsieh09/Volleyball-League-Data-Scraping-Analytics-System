@@ -3,7 +3,7 @@ import requests
 import pandas as pd
 from bs4 import BeautifulSoup
 from volleyballdata.schema.dataset import check_match_schema, check_coach_schema, check_match_score_schema, check_player_schema, check_referee_schema
-#from volleyballdata.database.db import insert_coach, insert_match, insert_match_score, insert_player_stats, insert_referee 
+from volleyballdata.database.db import insert_coach, insert_match, insert_match_score, insert_player_stats, insert_referee 
 from urllib.parse import urlparse, parse_qs
 
 ################ Define functions for verifying match url is valid ################
@@ -54,15 +54,6 @@ def get_matchid(url):
 
 ###############################################################
 
-############## Define functions for fetching HTML #############
-
-def fetch_html(url:str, parser='html.parser'):
-    response = requests.get(url)
-    response.raise_for_status()
-    return BeautifulSoup(response.text, parser)
-
-###############################################################
-
 ################ Define functions for crawlers ################
 
 """Parameter of request header to mimic the browser sending request"""
@@ -79,7 +70,9 @@ def tvl_header():
     }
 
 """Gather match information"""
-def scrape_match(soup: BeautifulSoup, url: str,) -> pd.DataFrame:
+def scrape_match(url: str,) -> pd.DataFrame:
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, 'html.parser')
     match_info = soup.find('h3').get_text(strip=True)
 
     """Group the capturing information into groups"""
@@ -133,7 +126,9 @@ def scrape_match(soup: BeautifulSoup, url: str,) -> pd.DataFrame:
     return match_df
 
 """Gather match score information"""
-def scrape_match_score(soup: BeautifulSoup,) -> pd.DataFrame:
+def scrape_match_score(url: str,) -> pd.DataFrame:
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, 'html.parser')
     match_table = soup.find('div',class_="MatchResult").find('table')
     match_rows = match_table.find_all('tr')
 
@@ -162,9 +157,10 @@ def scrape_match_score(soup: BeautifulSoup,) -> pd.DataFrame:
     return match_score_df
 
 """Gather referee score information"""
-def scrape_ref(soup: BeautifulSoup,):
+def scrape_ref(url: str,):
+    response = requests.get(url)
     #Since the website wrongly programmed HTML, which has a </td> before </th>, thus using lxml
-    #soup = BeautifulSoup(response.text, 'lxml')
+    soup = BeautifulSoup(response.text, 'lxml')
 
     ref_table = soup.find('th',string="第一裁判").find_parent('table')
     ref_rows = ref_table.find_all('tr')
@@ -189,7 +185,9 @@ def scrape_ref(soup: BeautifulSoup,):
     return ref_df_rename
 
 """Gather coach information"""
-def scrape_coach(soup: BeautifulSoup,) -> pd.DataFrame:
+def scrape_coach(url: str,) -> pd.DataFrame:
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, 'html.parser')
     data = soup.find_all('h3')
     data_eliminate_first = data[-2:]
     coach_data = []
@@ -211,7 +209,9 @@ def scrape_coach(soup: BeautifulSoup,) -> pd.DataFrame:
     return coach_df
 
 """Gather player information"""
-def scrape_player(soup: BeautifulSoup):
+def scrape_player(url):
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, 'lxml')
 
     team_headers = soup.find_all('h3')[-2:]
     team_name = [team.text.split('：')[0].strip() for team in team_headers]
@@ -260,30 +260,27 @@ def scrape_player(soup: BeautifulSoup):
 ################ Define functions to start the program ################
 
 def start(url):
-
-    soup_html = fetch_html(url)
-    soup_lxml = fetch_html(url,parser='lxml')
     cup = get_cupid(url)
     match = get_matchid(url)
 
-    match_df = scrape_match(soup_html,url)
+    match_df = scrape_match(url)
     match_df = check_match_schema(match_df.copy())
     insert_match(match_df,cup,match)
 
-    match_score_df = scrape_match_score(soup_html)
+    match_score_df = scrape_match_score(url)
     match_score_df = check_match_score_schema(match_score_df.copy())
     match_cup_id = str(match_df.iloc[0]["index"]) + "_" + str(cup)
     insert_match_score(match_score_df,match_cup_id)
 
-    ref_df = scrape_ref(soup_lxml)
+    ref_df = scrape_ref(url)
     ref_df = check_referee_schema(ref_df)
     insert_referee(ref_df,match_cup_id)
 
-    coach_df = scrape_coach(soup_html)
+    coach_df = scrape_coach(url)
     coach_df = check_coach_schema(coach_df.copy())
     insert_coach(coach_df,match_cup_id)
 
-    player_df = scrape_player(soup_lxml)
+    player_df = scrape_player(url)
     player_df = check_player_schema(player_df.copy())
     insert_player_stats(player_df,match_cup_id)
 
@@ -309,8 +306,6 @@ if __name__ == '__main__':
         print(match)
         '''
         if is_valid_match(url):
-            soup_html = fetch_html(url)
-            soup_lxml = fetch_html(url,parser='lxml')
-            player_df = scrape_player(soup_lxml)
-            player_df = check_player_schema(player_df.copy())
-            print(player_df)
+            match_df = scrape_match(url)
+            match_df = check_match_schema(match_df.copy())
+            print(match_df)
