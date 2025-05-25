@@ -9,7 +9,7 @@ services:
     environment:
       - MYSQL_HOST=mysql
       - MYSQL_USER=user
-      - MYSQL_PASSWORD=test
+      - MYSQL_PASSWORD=riUuO+0bo74)
       - MYSQL_PORT=3306
       - MYSQL_DATABASE=volleyballdb
       - MESSAGE_QUEUE_HOST=rabbitmq
@@ -30,7 +30,7 @@ services:
     environment:
       - MYSQL_HOST=mysql
       - MYSQL_USER=user
-      - MYSQL_PASSWORD=test
+      - MYSQL_PASSWORD=riUuO+0bo74)
       - MYSQL_PORT=3306
       - MYSQL_DATABASE=volleyballdb
       - MESSAGE_QUEUE_HOST=rabbitmq
@@ -51,7 +51,7 @@ services:
     environment:
       - MYSQL_HOST=mysql
       - MYSQL_USER=user
-      - MYSQL_PASSWORD=test
+      - MYSQL_PASSWORD=riUuO+0bo74)
       - MYSQL_PORT=3306
       - MYSQL_DATABASE=volleyballdb
       - MESSAGE_QUEUE_HOST=rabbitmq
@@ -72,7 +72,7 @@ services:
     environment:
       - MYSQL_HOST=mysql
       - MYSQL_USER=user
-      - MYSQL_PASSWORD=test
+      - MYSQL_PASSWORD=riUuO+0bo74)
       - MYSQL_PORT=3306
       - MYSQL_DATABASE=volleyballdb
       - MESSAGE_QUEUE_HOST=rabbitmq
@@ -93,7 +93,7 @@ services:
     environment:
       - MYSQL_HOST=mysql
       - MYSQL_USER=user
-      - MYSQL_PASSWORD=test
+      - MYSQL_PASSWORD=riUuO+0bo74)
       - MYSQL_PORT=3306
       - MYSQL_DATABASE=volleyballdb
       - MESSAGE_QUEUE_HOST=rabbitmq
@@ -114,7 +114,7 @@ services:
     environment:
       - MYSQL_HOST=mysql
       - MYSQL_USER=user
-      - MYSQL_PASSWORD=test
+      - MYSQL_PASSWORD=riUuO+0bo74)
       - MYSQL_PORT=3306
       - MYSQL_DATABASE=volleyballdb
       - MESSAGE_QUEUE_HOST=rabbitmq
@@ -135,7 +135,7 @@ services:
     environment:
       - MYSQL_HOST=mysql
       - MYSQL_USER=user
-      - MYSQL_PASSWORD=test
+      - MYSQL_PASSWORD=riUuO+0bo74)
       - MYSQL_PORT=3306
       - MYSQL_DATABASE=volleyballdb
       - MESSAGE_QUEUE_HOST=rabbitmq
@@ -156,7 +156,7 @@ services:
     environment:
       - MYSQL_HOST=mysql
       - MYSQL_USER=user
-      - MYSQL_PASSWORD=test
+      - MYSQL_PASSWORD=riUuO+0bo74)
       - MYSQL_PORT=3306
       - MYSQL_DATABASE=volleyballdb
       - MESSAGE_QUEUE_HOST=rabbitmq
