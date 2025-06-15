@@ -3,10 +3,13 @@ from volleyballdata.database.router import Router
 
 ################ Define functions for inserting data into database ################
 
-router = Router()
+def get_router():
+    return Router()
+
 
 """Insert match data into mysql"""
 def insert_match(match_df, cup, matchid):
+    router = get_router()
     db_conn = router.mysql_volleyball_conn
 
     query = text("""
@@ -34,6 +37,7 @@ def insert_match(match_df, cup, matchid):
 
 """Insert match score data into mysql"""
 def insert_match_score(match_score_df, match_cup_id):
+    router = get_router()
     db_conn = router.mysql_volleyball_conn
 
     query = text("""
@@ -58,6 +62,7 @@ def insert_match_score(match_score_df, match_cup_id):
     db_conn.close()
 
 def insert_referee(ref_df, match_cup_id):
+    router = get_router()
     db_conn = router.mysql_volleyball_conn
 
     query = text("""
@@ -78,6 +83,7 @@ def insert_referee(ref_df, match_cup_id):
     db_conn.close()
 
 def insert_coach(coach_df, match_cup_id):
+    router = get_router()
     db_conn = router.mysql_volleyball_conn
 
     query = text("""
@@ -100,6 +106,7 @@ def insert_coach(coach_df, match_cup_id):
 
 """
 def insert_player(player_df):
+    router = get_router()
     db_conn = router.mysql_volleyball_conn
 
     query = "    INSERT INTO Player (player_name, player_number, position)    VALUES (%s, %s, %s)    "
@@ -112,6 +119,7 @@ def insert_player(player_df):
 """
 
 def insert_player_stats(player_df, match_cup_id):
+    router = get_router()
     db_conn = router.mysql_volleyball_conn
 
     query = text("""
