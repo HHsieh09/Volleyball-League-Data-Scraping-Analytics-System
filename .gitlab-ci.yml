@@ -19,12 +19,12 @@ test-crawler:
   # Run the test Docker image
   # Since our Dockerfile is based on ubuntu:18.04, we'll use the same image for testing here
 
-  image: ubuntu:18.04
+  image: python:3.9.21-slim
   before_script:
     # Pre-test setup commands
     # Need to install the environment first
-    - apt-get update && apt-get install python3.9.21 -y && apt-get install python3-pip -y
-    - pip3 install poetry
+    - apt-get update && apt-get install -y build-essential gcc
+    - pip install poetry
     - export LC_ALL=C.UTF-8 LANG=C.UTF-8
     - poetry sync
     - VERSION=RELEASE python3 genenv.py
