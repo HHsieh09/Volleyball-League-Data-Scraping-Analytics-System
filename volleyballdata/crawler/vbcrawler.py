@@ -66,7 +66,7 @@ def fetch_html(url:str, parser='html.parser'):
 ################ Define functions for crawlers ################
 
 """Parameter of request header to mimic the browser sending request"""
-def tvl_header():
+'''def tvl_header():
     return {
         "Accept": "/",
         "Accept-Encoding": "gzip, deflate",
@@ -77,7 +77,7 @@ def tvl_header():
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
         "X-Requested-With": "XMLHttpRequest",
     }
-
+'''
 """Gather match information"""
 def scrape_match(soup: BeautifulSoup, url: str,) -> pd.DataFrame:
     match_info = soup.find('h3').get_text(strip=True)

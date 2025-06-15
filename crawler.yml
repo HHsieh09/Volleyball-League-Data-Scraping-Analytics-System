@@ -2,7 +2,7 @@ version: '3.0'
 
 services:
   crawler_cup_13:
-    image: hhsiehde/crawler:7.2.1 # crawler:7.2.1
+    image: hhsiehde/crawler:${GIT_TAG} # crawler:7.2.1
     working_dir: /volleyballdata/volleyballdata
     command: poetry run celery -A tasks.worker worker --loglevel=info --queues=cup_13
     restart: always

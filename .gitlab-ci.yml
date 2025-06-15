@@ -1,0 +1,71 @@
+stages:
+  # CI pipeline
+  # General Development Process
+  # Test passed -> 
+  #   Merge into stage/master -> 
+  #     Build Docker image ->
+  #       Deploy service
+  # These steps will be carried out sequentially
+  # test -> build -> deploy
+  - test
+  - build
+  - deploy
+
+# CI - Testing
+test-crawler:
+  stage: test
+  # Stage: Configure Order of CI Pipeline
+
+  # Run the test Docker image
+  # Since our Dockerfile is based on ubuntu:18.04, we'll use the same image for testing here
+
+  image: ubuntu:18.04
+  before_script:
+    # Pre-test setup commands
+    # Need to install the environment first
+    - apt-get update && apt-get install python3.9.21 -y && apt-get install python3-pip -y
+    - pip3 install poetry
+    - export LC_ALL=C.UTF-8 LANG=C.UTF-8
+    - poetry sync
+    - VERSION=RELEASE python3 genenv.py
+  script:
+    - poetry run pytest --cov-report term-missing --cov-config=.coveragerc --cov=./volleyballdata/ tests/
+
+  only:
+    # Configure this CI to run only for merge requests
+    refs:
+      - merge_requests
+
+# CI - Build
+build-docker-image:
+  stage: build
+
+  before_script:
+    # Since the image needs to be pushed to Docker Hub after building, a prior login is required
+    # For login, we're using a token here; refer to the following link: https://docs.docker.com/docker-hub/access-tokens/#create-an-access-token
+    # You can use the token in plain text or store it in GitLab CI/CD Variables and reference it as a variable, like this: docker login -u "linsamtw" -p 7777-7777-7777-7777
+    # However, in practice, we don't want the token to be public, so we'll adopt the following approach.
+    - docker login -u "hhsiehde" -p ${DOCKER_HUB_TOKEN}
+
+  script:
+    make build-image
+    make push-image
+
+  tags:
+    - build_image
+
+  only:
+    - tags 
+
+# CI - Deploy
+deploy-crawler:
+    stage: deploy
+    
+    script:
+      # Deploy Crawler
+      - make deploy-crawler
+    tags:
+      - build_image
+    only:
+      # Configure to deploy only after a tag has been set
+      - tags 

@@ -25,3 +25,18 @@ gen-dev-env-variables:
 # Generate release environment variables
 gen-release-env-variables:
 	VERSION=RELEASE python genenv.py
+
+# Create tag variable for version
+GIT_TAG := ${shell git describe --abbrev=0 --tags}
+
+# Generate docker image
+build-image:
+	docker build -f Dockerfile -t hhsiehde/crawler:${GIT_TAG}
+
+# Push docker image
+push-image:
+	docker push hhsiehde/crawler:${GIT_TAG}
+
+# Deploy crawler
+deploy-crawler:
+	GIT_TAG=${GIT_TAG} docker stack deploy --with-registry-auth -c crawler.yml crawler
