@@ -13,7 +13,7 @@ def insert_match(match_df, cup, matchid):
     db_conn = router.mysql_volleyball_conn
 
     query = text("""
-    INSERT IGNORE INTO Matches (match_cup_id, match_id, tournament_id, match_date, match_time, arena, duration, match_type, group)
+    INSERT IGNORE INTO Matches (match_cup_id, match_id, tournament_id, match_date, match_time, arena, duration, match_type, `group`)
     VALUES (:match_cup_id, :match_id, :tournament_id, :match_date, :match_time, :arena, :duration, :match_type, :group)
     """)
 
