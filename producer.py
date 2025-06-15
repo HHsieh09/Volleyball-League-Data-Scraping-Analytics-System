@@ -6,7 +6,7 @@ def send_tasks():
     # 發送任務有兩種方式
     # 1.
     #13-20
-    cupids = list(range(13, 17))  # 13 ~ 20
+    cupids = list(range(17, 19))  # 13 ~ 20
 
     for cup in cupids:
         print(f"Scan Cup ID: {cup}")

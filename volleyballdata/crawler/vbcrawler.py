@@ -297,7 +297,7 @@ def start(url):
 
 if __name__ == '__main__':
     for match_id in range(1,2):
-        url = f'http://114.35.229.141/_handler/Match.ashx?CupID=13&MatchID={match_id}&SetNum=0'
+        url = f'http://114.35.229.141/_handler/Match.ashx?CupID=17&MatchID={match_id}&SetNum=0'
         '''
         if is_valid_match(url):
             player_df = scrape_player(url)

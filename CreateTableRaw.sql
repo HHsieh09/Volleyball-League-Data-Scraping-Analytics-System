@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS Matches (
     arena VARCHAR(255),
     duration TIME,
     match_type VARCHAR(255)
+    `group` VARCHAR(10)
 );
 
 -- 建 Match_Score 表
