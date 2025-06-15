@@ -265,6 +265,7 @@ def start(url):
     soup_lxml = fetch_html(url,parser='lxml')
     cup = get_cupid(url)
     match = get_matchid(url)
+    match_cup_id = f"{match}_{cup}"
 
     match_df = scrape_match(soup_html,url)
     match_df = check_match_schema(match_df.copy())
@@ -272,7 +273,6 @@ def start(url):
 
     match_score_df = scrape_match_score(soup_html)
     match_score_df = check_match_score_schema(match_score_df.copy())
-    match_cup_id = str(match_df.iloc[0]["index"]) + "_" + str(cup)
     insert_match_score(match_score_df,match_cup_id)
 
     ref_df = scrape_ref(soup_lxml)
@@ -297,7 +297,7 @@ def start(url):
 
 if __name__ == '__main__':
     for match_id in range(1,2):
-        url = f'http://114.35.229.141/_handler/Match.ashx?CupID=16&MatchID={match_id}&SetNum=0'
+        url = f'http://114.35.229.141/_handler/Match.ashx?CupID=13&MatchID={match_id}&SetNum=0'
         '''
         if is_valid_match(url):
             player_df = scrape_player(url)
