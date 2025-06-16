@@ -57,7 +57,7 @@ def test_scrape_match(mock_db_conn):
     }
     expected_df = pd.DataFrame(expected_data)
 
-    actual_df = scrape_match(soup_html)
+    actual_df = scrape_match(soup_html, url)
 
     pd.testing.assert_frame_equal(actual_df, expected_df)
 
