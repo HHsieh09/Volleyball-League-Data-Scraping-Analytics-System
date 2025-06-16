@@ -68,4 +68,4 @@ deploy-crawler:
       - build_image
     only:
       # Configure to deploy only after a tag has been set
-      - tags 
+      - tags
