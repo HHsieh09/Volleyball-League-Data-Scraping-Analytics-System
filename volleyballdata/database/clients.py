@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine, engine
 from volleyballdata.config import MYSQL_DATABASE, MYSQL_HOST, MYSQL_PASSWORD, MYSQL_PORT, MYSQL_USER
 
-def get_mysql_volleyballdata_conn() -> engine.base.Connection:
+def get_mysql_volleyballdata_conn(database: str ="volleyballdb") -> engine.base.Connection:
     """
     user: user
     password: test
@@ -12,7 +12,7 @@ def get_mysql_volleyballdata_conn() -> engine.base.Connection:
     #address = "mysql+pymysql://user:test@host.docker.internal:3306/volleyballdb"
     address = (
     f"mysql+pymysql://{MYSQL_USER}:{MYSQL_PASSWORD}"
-    f"@{MYSQL_HOST}:{MYSQL_PORT}/{MYSQL_DATABASE}"
+    f"@{MYSQL_HOST}:{MYSQL_PORT}/{database}"
     )
     engine = create_engine(address)
     
