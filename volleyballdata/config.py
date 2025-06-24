@@ -1,4 +1,7 @@
 import os
+from dotenv import load_dotenv
+
+load_dotenv() 
 
 MYSQL_HOST = os.environ.get("MYSQL_HOST", "mysql")
 MYSQL_USER = os.environ.get("MYSQL_USER","user")
