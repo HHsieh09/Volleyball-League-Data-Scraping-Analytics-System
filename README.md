@@ -42,9 +42,13 @@ This project includes two attacker classification models—Men's Division and Wo
 
 Detailed model testing results:
 
-![ConfusionMatrix _Attacker(Men)](ml/model_analysis/ConfusionMatrix_Attacker(Men).png)
+![men_attacker](img/men_attacker.png)
 
-![Confusion Matrix - Attacker (Women)](ml/model_analysis/ConfusionMatrix_Attacker(Women).png)
+![women_attacker](img/women_attacker.png)
+
+![ConfusionMatrix_Attacker(Men)](ml/model_analysis/ConfusionMatrix_Attacker(Men).png)
+
+![ConfusionMatrix_Attacker(Women)](ml/model_analysis/ConfusionMatrix_Attacker(Women).png)
 
 Each model was trained using features extracted from real match data such as:
 
@@ -192,6 +196,10 @@ After deploying all services using Docker Swarm, you need to configure node labe
 | flower   | true  |
 | mysql    | true  |
 | rabbitmq | true  |
+
+![portainer_1](img/portainer_1.png)
+
+![portainer_2](img/portainer_2.png)
 
 Docker Swarm uses node constraints to determine where to deploy a service. Your docker-compose / stack files use label-based placement rules like:
 
