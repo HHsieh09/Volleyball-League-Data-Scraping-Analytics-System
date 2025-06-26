@@ -327,10 +327,6 @@ git push origin feature-yourfeature
 
 4. Open a pull request.
 
-## License
-
-This project is licensed under the [GNU General Public License v3.0](LICENSE)
-
 ## Acknowledgements
 
 This project was inspired by the technical structure and best practices outlined in the book  
@@ -345,5 +341,6 @@ While I followed the overall approach in the book to build a robust ETL + API + 
 
 This project extends beyond the book with real-world public sports data, Tableau dashboards, and national team prediction modeling.
 
-## TODOs
-- [ ] Improve scraping robustness with retry logic
+## License
+
+This project is licensed under the [GNU General Public License v3.0](LICENSE)
