@@ -331,5 +331,19 @@ git push origin feature-yourfeature
 
 This project is licensed under the [GNU General Public License v3.0](LICENSE)
 
+## Acknowledgements
+
+This project was inspired by the technical structure and best practices outlined in the book  
+**《Python 大數據專案 X 工程 X 產品：資料工程師的升級攻略（第二版）》**  
+(ISBN: 9789864347527) [Books.com.tw](https://www.books.com.tw/products/0010964744) 
+by Sam Lin [linsamtw](https://github.com/linsamtw)
+
+Huge shout out to Sam!
+
+While I followed the overall approach in the book to build a robust ETL + API + CI/CD pipeline using tools like FastAPI, Docker Swarm, and Celery,  
+**all domain-specific data, use case design, feature engineering, and model logic were self-developed and focused on Taiwan's Top Volleyball League.**
+
+This project extends beyond the book with real-world public sports data, Tableau dashboards, and national team prediction modeling.
+
 ## TODOs
 - [ ] Improve scraping robustness with retry logic
