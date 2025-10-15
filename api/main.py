@@ -85,5 +85,5 @@ def predict_female_player(
     indicators = np.array([[attack_percentage, block_total, serve_percentage,
                           total_point_score, receive_percentage, dig_percentage,
                           set_percentage]])
-    prediction = attacker_model_men.predict(indicators)[0]
+    prediction = attacker_model_women.predict(indicators)[0]
     return {"name": name, "predicted_label": prediction}
