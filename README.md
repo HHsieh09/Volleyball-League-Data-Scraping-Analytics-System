@@ -15,6 +15,10 @@ The Volleyball League Data Scraper consists of two main modules:
 - ML models: Predicts player performance
 - Tableau: Visualizing data
 
+### Architecture Diagram
+
+![Architecture Diagram](img/volleyball_project.png)
+
 ### API Documentation
 
 The FastAPI-based web service is live and available for testing or integration at:
@@ -23,11 +27,11 @@ http://173.255.238.69:8888/docs
 
 ### Tableau Dashboard Overview
 
-![Tableau Dashboard - City](img/tableau_city.png)
+![Tableau Dashboard - City](img/tableau_city_dashboard.png)
 
-![Tableau Dashboard - team](img/tableau_team.png)
+![Tableau Dashboard - team](img/tableau_team_dashboard.png)
 
-![Tableau Dashboard - player](img/tableau_player.png)
+![Tableau Dashboard - player](img/tableau_player_dashboard.png)
 
 https://public.tableau.com/app/profile/chen.han.hsieh/viz/2_17505645639340/City
 
